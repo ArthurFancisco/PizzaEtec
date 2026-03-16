@@ -1,0 +1,34 @@
+type Event @table {
+  name: String!
+  date: Date!
+  time: String!
+  location: String!
+  description: String
+  ticketPrice: Float
+  contactEmail: String
+  contactPhone: String
+}
+
+type Pizza @table {
+  name: String!
+  price: Float!
+  description: String
+  imageUrl: String
+  ingredients: [String]
+}
+
+type EtecInfo @table {
+  name: String!
+  mission: String!
+  address: String
+  phone: String
+  website: String
+  aboutText: String
+}
+
+type Organizer @table {
+  name: String!
+  role: String!
+  email: String
+  phone: String
+}

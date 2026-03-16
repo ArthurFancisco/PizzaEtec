@@ -1,0 +1,49 @@
+query GetEtecInfo @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  etecInfos {
+    name
+    mission
+    address
+    phone
+    website
+    aboutText
+  }
+}
+
+query ListAllPizzas @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  pizzas {
+    id
+    name
+    price
+    description
+    imageUrl
+    ingredients
+  }
+}
+
+mutation CreateEvent($name: String!, $date: Date!, $time: String!, $location: String!, $description: String, $ticketPrice: Float, $contactEmail: String, $contactPhone: String) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  event_insert(
+    data: {
+      name: $name
+      date: $date
+      time: $time
+      location: $location
+      description: $description
+      ticketPrice: $ticketPrice
+      contactEmail: $contactEmail
+      contactPhone: $contactPhone
+    }
+  ) {
+    id
+  }
+}
+
+mutation UpdateOrganizerEmail($id: UUID!, $email: String!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  organizer_update(
+    id: $id,
+    data: {
+      email: $email
+    }
+  ) {
+    id
+  }
+}

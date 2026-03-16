@@ -1,0 +1,52 @@
+mutation CreateSeedData @transaction @auth(level: USER, insecureReason: "This operation is for seeding data and should only be run by authenticated users with appropriate permissions.") {
+  pizza1: pizza_insert(data: {
+    name: "Pepperoni Pizza",
+    price: 12.99,
+    description: "Classic pepperoni pizza with mozzarella and a rich tomato sauce.",
+    imageUrl: "https://example.com/pepperoni.jpg",
+    ingredients: ["pepperoni", "mozzarella", "tomato sauce", "pizza dough"]
+  })
+  pizza2: pizza_insert(data: {
+    name: "Veggie Delight",
+    price: 14.50,
+    description: "A fresh vegetarian pizza loaded with bell peppers, onions, olives, and mushrooms.",
+    imageUrl: "https://example.com/veggie.jpg",
+    ingredients: ["bell peppers", "onions", "olives", "mushrooms", "mozzarella", "tomato sauce", "pizza dough"]
+  })
+  event1: event_insert(data: {
+    name: "Grand Opening Celebration",
+    date: "2024-07-20",
+    time: "18:00",
+    location: "Main Street Branch",
+    description: "Join us for our grand opening with special offers and live music!",
+    ticketPrice: 0.00,
+    contactEmail: "info@pizzaetec.com"
+  })
+  event2: event_insert(data: {
+    name: "Pizza Making Workshop",
+    date: "2024-08-15",
+    time: "14:30",
+    location: "Cooking Studio",
+    description: "Learn to make your own delicious pizza from scratch with our expert chefs.",
+    ticketPrice: 25.00,
+    contactPhone: "+15551234567"
+  })
+  organizer1: organizer_insert(data: {
+    name: "Maria Rodriguez",
+    role: "Event Coordinator",
+    email: "maria.r@pizzaetec.com"
+  })
+  organizer2: organizer_insert(data: {
+    name: "David Chen",
+    role: "Head Chef",
+    phone: "+15559876543"
+  })
+  etecInfo: etecInfo_insert(data: {
+    name: "PizzaEtec Main Branch",
+    mission: "To deliver delicious pizza and unforgettable experiences.",
+    address: "123 Main St, Anytown, USA",
+    phone: "+15551112222",
+    website: "https://www.pizzaetec.com",
+    aboutText: "PizzaEtec has been serving the best pizzas in town for over 10 years."
+  })
+}

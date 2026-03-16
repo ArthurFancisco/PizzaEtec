@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>9ª Festa da Pizza · ETEC Fernandópolis · 3º INFONET</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+
+/* ══════════════════════════════════════
+   ROOT & RESET
+══════════════════════════════════════ */
+:root {
+  --r:#E63000; --o:#FF6B00; --y:#FFB800; --g:#FF8C00;
+  --dk:#100600; --d2:#1C0900; --d3:#2A0E00;
+  --cream:#FFF6E8;
+  --muted:rgba(255,246,232,.45);
+  --border:rgba(255,180,60,.18);
+  --glow:rgba(255,100,0,.55);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--dk);color:var(--cream);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* ══════════════════════════════════════
+   CURSOR
+══════════════════════════════════════ */
+#cursor{position:fixed;width:14px;height:14px;background:var(--y);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s,transform .2s;mix-blend-mode:difference;}
+#cursor-ring{position:fixed;width:44px;height:44px;border:1.5px solid rgba(255,184,0,.55);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform .12s ease;}
+
+/* ══════════════════════════════════════
+   NOISE GRAIN
+══════════════════════════════════════ */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.032;pointer-events:none;z-index:9000;}
+
+/* ══════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════ */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+.p-dot{position:absolute;border-radius:50%;background:var(--y);animation:pdrift var(--t,12s) var(--d,0s) ease-in-out infinite alternate;}
+@keyframes pdrift{0%{transform:translateY(0) translateX(0) scale(1);opacity:var(--op,.06);}100%{transform:translateY(var(--dy,-60px)) translateX(var(--dx,30px)) scale(1.4);opacity:.01;}}
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  background:rgba(16,6,0,.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  z-index:8000;
+  padding:.9rem max(4vw,1.5rem);
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .3s;
+}
+.nav-logo{font-family:'Black Han Sans',sans-serif;font-size:1.25rem;color:#fff;letter-spacing:-1px;text-decoration:none;display:flex;align-items:center;gap:8px;}
+.nav-logo span{color:var(--o);}
+.nav-links{display:flex;gap:2rem;align-items:center;}
+.nav-links a{color:rgba(255,246,232,.65);text-decoration:none;font-weight:600;font-size:.88rem;letter-spacing:.5px;transition:color .25s;cursor:none;}
+.nav-links a:hover{color:var(--y);}
+.nav-cta{
+  background:linear-gradient(135deg,var(--r),var(--o));
+  color:#fff!important;padding:9px 22px;border-radius:999px;
+  font-size:.85rem;font-weight:700;letter-spacing:.5px;
+  text-decoration:none;cursor:none;
+  box-shadow:0 4px 18px rgba(230,48,0,.4);
+  transition:transform .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.nav-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-150%) skewX(-20deg);animation:sweep 3s 2s infinite;}
+.nav-cta:hover{transform:scale(1.07);box-shadow:0 8px 30px rgba(255,100,0,.6);}
+@keyframes sweep{0%{transform:translateX(-150%) skewX(-20deg);}60%{transform:translateX(150%) skewX(-20deg);}100%{transform:translateX(150%) skewX(-20deg);}}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--cream);border-radius:2px;transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,3,0,.97);backdrop-filter:blur(20px);z-index:7999;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-family:'Black Han Sans',sans-serif;font-size:2.2rem;color:rgba(255,246,232,.7);text-decoration:none;letter-spacing:1px;transition:color .2s;cursor:none;}
+.mobile-menu a:hover{color:var(--y);}
+.mobile-menu .nav-cta{font-size:1.1rem;padding:14px 36px;}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+#hero{
+  position:relative;min-height:100svh;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;overflow:hidden;z-index:2;
+  padding-top:72px;
+}
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 65% 80% at -10% 50%,rgba(230,48,0,.38) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 70% at 110% 50%,rgba(255,100,0,.22) 0%,transparent 65%),
+    radial-gradient(ellipse 100% 60% at 50% 110%,rgba(255,80,0,.3) 0%,transparent 60%),
+    linear-gradient(160deg,#1C0900 0%,#100600 60%,#0D0400 100%);
+  z-index:-1;
+}
+#hero-split{position:absolute;inset:0;pointer-events:none;z-index:0;}
+#hero-split::before{content:'';position:absolute;top:0;bottom:0;left:48%;width:2px;background:linear-gradient(180deg,transparent,rgba(255,180,0,.22) 30%,rgba(255,180,0,.45) 60%,transparent);}
+
+.hero-left{position:relative;z-index:2;padding:6rem 3rem 6rem 6vw;display:flex;flex-direction:column;gap:1.8rem;}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(255,100,0,.1);border:1px solid rgba(255,140,0,.32);
+  border-radius:999px;padding:7px 18px;
+  font-size:.72rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--y);width:fit-content;
+  animation:fadeUp .8s .1s both;
+}
+.hero-eyebrow .dot{width:7px;height:7px;background:var(--o);border-radius:50%;animation:blink 1.4s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
+
+h1.hero-h1{font-family:'Black Han Sans',sans-serif;font-size:clamp(4rem,7.5vw,8.5rem);line-height:.88;letter-spacing:-2px;animation:fadeUp .8s .2s both;}
+h1.hero-h1 .line1{color:#fff;display:block;}
+h1.hero-h1 .line2{display:block;background:linear-gradient(90deg,var(--o) 0%,var(--y) 55%,#fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 24px rgba(255,150,0,.5));}
+
+.hero-edition{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(.9rem,1.5vw,1.25rem);color:var(--muted);font-weight:300;line-height:1.6;animation:fadeUp .8s .3s both;}
+.hero-edition strong{color:var(--y);font-style:normal;}
+
+.hero-price-row{display:flex;align-items:baseline;gap:10px;animation:fadeUp .8s .4s both;}
+.hero-price-currency{font-family:'Black Han Sans',sans-serif;font-size:1.9rem;color:var(--o);}
+.hero-price-number{font-family:'Black Han Sans',sans-serif;font-size:clamp(3.5rem,6vw,6.5rem);line-height:1;color:#fff;text-shadow:0 0 50px rgba(255,150,0,.4);}
+.hero-price-label{font-size:.82rem;color:var(--muted);font-weight:500;line-height:1.5;}
+.hero-price-label span{color:var(--o);font-weight:700;}
+
+.hero-cta-group{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;animation:fadeUp .8s .5s both;}
+
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Black Han Sans',sans-serif;font-size:1.1rem;letter-spacing:1px;color:#fff;
+  background:linear-gradient(135deg,var(--r) 0%,var(--o) 50%,var(--g) 100%);
+  border:none;border-radius:14px;padding:16px 32px;cursor:none;text-decoration:none;
+  box-shadow:0 8px 32px rgba(230,48,0,.5),inset 0 1px 0 rgba(255,255,255,.2);
+  transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;
+  animation:ctaPulse 2.6s ease-in-out infinite;
+}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.15) 50%,transparent 100%);transform:translateX(-150%) skewX(-20deg);animation:sweep 3s 1.5s infinite;}
+.btn-primary:hover{transform:translateY(-3px) scale(1.04);}
+.btn-secondary{font-size:.88rem;font-weight:700;color:var(--muted);text-decoration:none;border-bottom:1px solid rgba(255,200,80,.3);padding-bottom:2px;transition:color .2s,border-color .2s;cursor:none;}
+.btn-secondary:hover{color:var(--y);border-color:var(--y);}
+@keyframes ctaPulse{
+  0%,100%{box-shadow:0 8px 32px rgba(230,48,0,.5),inset 0 1px 0 rgba(255,255,255,.2);}
+  50%{box-shadow:0 8px 48px rgba(255,100,0,.8),0 0 0 8px rgba(255,100,0,.1),inset 0 1px 0 rgba(255,255,255,.2);}
+}
+
+.hero-detail-strip{display:flex;gap:2rem;flex-wrap:wrap;animation:fadeUp .8s .6s both;}
+.detail-item{display:flex;flex-direction:column;gap:3px;}
+.detail-label{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,246,232,.28);font-weight:700;}
+.detail-value{font-size:.92rem;font-weight:700;color:rgba(255,246,232,.8);}
+
+/* Hero right */
+.hero-right{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:4rem 5vw 4rem 2rem;min-height:80vh;}
+.pizza-stage{position:relative;width:clamp(280px,36vw,540px);height:clamp(280px,36vw,540px);}
+.pizza-glow{position:absolute;inset:-22%;border-radius:50%;background:radial-gradient(circle,rgba(255,120,0,.22) 0%,transparent 65%);animation:glowPulse 3s ease-in-out infinite;}
+.pizza-glow2{position:absolute;inset:-6%;border-radius:50%;border:1px solid rgba(255,180,0,.12);animation:ringExpand 3s ease-in-out infinite;}
+.pizza-glow3{position:absolute;inset:5%;border-radius:50%;border:1px dashed rgba(255,180,0,.08);animation:ringExpand 3s .5s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{opacity:.7;transform:scale(1);}50%{opacity:1;transform:scale(1.1);}}
+@keyframes ringExpand{0%,100%{transform:scale(1);opacity:.6;}50%{transform:scale(1.08);opacity:1;}}
+.pizza-emoji-main{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(160px,26vw,360px);line-height:1;animation:pizzaSpin 16s linear infinite,pizzaFloat 4s ease-in-out infinite;filter:drop-shadow(0 10px 50px rgba(255,150,0,.6)) drop-shadow(0 0 80px rgba(255,80,0,.3));user-select:none;}
+@keyframes pizzaSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes pizzaFloat{0%,100%{margin-top:0;}50%{margin-top:-18px;}}
+.pizza-label{position:absolute;background:rgba(16,6,0,.88);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;white-space:nowrap;animation:labelFloat 3.2s ease-in-out infinite;z-index:3;}
+.pizza-label.top-right{top:6%;right:-10%;animation-delay:0s;}
+.pizza-label.bottom-left{bottom:6%;left:-12%;animation-delay:1.6s;}
+@keyframes labelFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.lbl-title{font-family:'Black Han Sans',sans-serif;font-size:.92rem;color:#fff;}
+.lbl-sub{font-size:.68rem;color:var(--muted);margin-top:2px;}
+.orbit-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.orbit-item{position:absolute;font-size:1.6rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));animation:orbitItem var(--ot,10s) var(--od,0s) linear infinite;}
+@keyframes orbitItem{from{transform:rotate(0deg) translateX(var(--or,140px)) rotate(0deg);}to{transform:rotate(360deg) translateX(var(--or,140px)) rotate(-360deg);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══════════════════════════════════════
+   MARQUEE
+══════════════════════════════════════ */
+.marquee-strip{position:relative;z-index:3;background:linear-gradient(90deg,var(--r),var(--o),var(--y),var(--o),var(--r));background-size:300% 100%;animation:gradShift 4s linear infinite;padding:13px 0;overflow:hidden;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);}
+@keyframes gradShift{0%{background-position:0% 50%;}100%{background-position:300% 50%;}}
+.marquee-track{display:flex;gap:0;animation:marqueeScroll 28s linear infinite;width:max-content;}
+@keyframes marqueeScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.marquee-item{padding:0 2.2rem;font-family:'Black Han Sans',sans-serif;font-size:.95rem;letter-spacing:3px;color:rgba(0,0,0,.6);white-space:nowrap;display:flex;align-items:center;gap:.9rem;}
+.marquee-sep{opacity:.45;}
+
+/* ══════════════════════════════════════
+   SECTION SCAFFOLD
+══════════════════════════════════════ */
+.section{position:relative;z-index:2;padding:8rem max(5vw,1.8rem);}
+.section-inner{max-width:1100px;margin:0 auto;}
+.sec-label{font-size:.7rem;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--o);margin-bottom:.8rem;}
+.sec-title{font-family:'Black Han Sans',sans-serif;font-size:clamp(2.2rem,5vw,4.5rem);line-height:.92;color:#fff;margin-bottom:1rem;}
+.sec-title em{font-style:normal;background:linear-gradient(90deg,var(--o),var(--y));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sec-line{width:48px;height:3px;background:linear-gradient(90deg,var(--r),var(--y));border-radius:999px;margin-bottom:3.5rem;}
+
+/* ══════════════════════════════════════
+   COUNTDOWN
+══════════════════════════════════════ */
+#countdown{
+  background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(200,40,0,.2) 0%,transparent 70%),var(--d2);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:6rem max(5vw,1.8rem);
+}
+.cd-layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4rem;}
+.cd-blocks{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;}
+.cd-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:20px;padding:1.8rem 1.6rem;min-width:100px;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(10px);transition:border-color .3s,transform .3s;}
+.cd-card:hover{border-color:rgba(255,180,0,.4);transform:translateY(-5px);}
+.cd-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--r),var(--y));}
+.cd-num{font-family:'Black Han Sans',sans-serif;font-size:clamp(2.5rem,4.5vw,4rem);background:linear-gradient(135deg,#fff,var(--y));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;display:block;}
+.cd-lbl{font-size:.62rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,246,232,.28);font-weight:700;margin-top:.4rem;display:block;}
+.cd-colon{font-family:'Black Han Sans',sans-serif;font-size:2.8rem;color:rgba(255,180,0,.28);padding-bottom:10px;}
+
+/* ══════════════════════════════════════
+   FLAVORS
+══════════════════════════════════════ */
+#flavors{background:var(--dk);}
+.flavors-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.flavor-card{position:relative;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:24px;padding:3rem 2.5rem;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;cursor:none;}
+.flavor-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% -10%,rgba(255,140,0,.1) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
+.flavor-card:hover{transform:translateY(-9px);border-color:rgba(255,180,0,.4);box-shadow:0 28px 60px rgba(255,80,0,.2);}
+.flavor-card:hover::before{opacity:1;}
+.corner-deco{position:absolute;top:-20px;right:-20px;font-size:5rem;opacity:.05;transform:rotate(15deg);pointer-events:none;}
+.fc-emoji{font-size:clamp(3.2rem,6vw,5.5rem);display:block;margin-bottom:1.4rem;filter:drop-shadow(0 4px 16px rgba(255,180,0,.4));transition:transform .3s;}
+.flavor-card:hover .fc-emoji{transform:scale(1.12) rotate(-6deg);}
+.fc-name{font-family:'Black Han Sans',sans-serif;font-size:clamp(1.6rem,3vw,2.5rem);color:#fff;margin-bottom:.5rem;line-height:1;}
+.fc-desc{font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:1.5rem;}
+.fc-tag{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(90deg,var(--r),var(--o));color:#fff;padding:6px 16px;border-radius:999px;}
+.flavors-choice-note{margin-top:2rem;background:rgba(255,180,0,.05);border:1px solid rgba(255,180,0,.17);border-radius:16px;padding:1.4rem 2rem;display:flex;align-items:center;gap:1rem;font-size:.9rem;color:var(--muted);line-height:1.6;}
+.flavors-choice-note .icon{font-size:1.5rem;flex-shrink:0;}
+.flavors-choice-note strong{color:var(--y);}
+
+/* ══════════════════════════════════════
+   EVENTO SECTION — NOVA
+   Contexto: festa da escola toda, vendas
+   por todas as salas, INFONET em destaque
+══════════════════════════════════════ */
+#evento{
+  background:
+    radial-gradient(ellipse 80% 50% at 0% 50%,rgba(230,48,0,.12) 0%,transparent 60%),
+    var(--d2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.evento-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;
+  align-items:center;
+}
+.evento-text .sec-line{margin-bottom:2rem;}
+.evento-desc{font-size:1rem;color:var(--muted);line-height:1.85;margin-bottom:1.5rem;}
+.evento-desc strong{color:var(--cream);}
+
+/* Destaque INFONET dentro do evento */
+.evento-highlight{
+  background:linear-gradient(135deg,rgba(230,48,0,.12),rgba(255,180,0,.08));
+  border:1px solid rgba(255,180,0,.25);
+  border-radius:16px;
+  padding:1.3rem 1.6rem;
+  display:flex;align-items:flex-start;gap:14px;
+  margin-top:1.8rem;
+}
+.evento-highlight-icon{
+  font-size:1.6rem;flex-shrink:0;margin-top:2px;
+}
+.evento-highlight p{
+  font-size:.9rem;color:var(--muted);line-height:1.7;
+}
+.evento-highlight p strong{color:var(--y);}
+
+/* Estatísticas visuais do evento */
+.evento-stats{
+  display:flex;
+  flex-direction:column;
+  gap:1.2rem;
+}
+.estat-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.6rem 1.8rem;
+  display:flex;align-items:center;gap:1.4rem;
+  transition:transform .25s,border-color .25s;
+  cursor:default;
+}
+.estat-card:hover{transform:translateX(6px);border-color:rgba(255,180,0,.32);}
+.estat-num{
+  font-family:'Black Han Sans',sans-serif;
+  font-size:clamp(2rem,4vw,3rem);
+  background:linear-gradient(135deg,#fff,var(--y));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;white-space:nowrap;
+}
+.estat-label{
+  font-size:.82rem;color:var(--muted);line-height:1.5;
+}
+.estat-label strong{color:var(--cream);display:block;font-size:.95rem;}
+.estat-bar{
+  position:relative;
+  height:3px;
+  background:rgba(255,255,255,.06);
+  border-radius:999px;
+  margin-top:.6rem;
+  overflow:hidden;
+}
+.estat-bar-fill{
+  position:absolute;left:0;top:0;bottom:0;
+  background:linear-gradient(90deg,var(--r),var(--y));
+  border-radius:999px;
+  animation:barGrow 2s 0.5s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes barGrow{from{width:0;}to{width:var(--w,60%);}}
+
+/* ══════════════════════════════════════
+   WHY US
+══════════════════════════════════════ */
+#whyus{
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%,rgba(42,14,0,.9) 0%,transparent 70%),
+    var(--d3);
+}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:0;}
+.why-card{
+  background:rgba(255,255,255,.034);
+  border:1px solid var(--border);
+  border-radius:24px;padding:2.5rem 2rem;
+  text-align:center;
+  transition:transform .4s cubic-bezier(.23,1,.32,1),border-color .4s,box-shadow .4s;
+  position:relative;overflow:hidden;cursor:none;
+}
+.why-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 20%,rgba(255,140,0,.1) 0%,transparent 70%);opacity:0;transition:opacity .4s;}
+.why-card:hover{transform:translateY(-12px) scale(1.02);border-color:var(--y);box-shadow:0 28px 65px rgba(255,107,0,.22);}
+.why-card:hover::before{opacity:1;}
+.why-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--r),var(--y));border-radius:0 0 24px 24px;opacity:0;transition:opacity .3s;}
+.why-card:hover::after{opacity:1;}
+.why-emoji{font-size:3.8rem;margin-bottom:1.1rem;display:block;transition:transform .4s;filter:drop-shadow(0 4px 12px rgba(255,180,0,.3));}
+.why-card:hover .why-emoji{transform:scale(1.18) rotate(8deg);}
+.why-card h3{font-family:'Black Han Sans',sans-serif;font-size:clamp(1.2rem,2vw,1.6rem);color:#fff;margin-bottom:.6rem;line-height:1.1;}
+.why-card p{color:var(--muted);line-height:1.7;font-size:.88rem;}
+
+/* ══════════════════════════════════════
+   INFO
+══════════════════════════════════════ */
+#info{
+  background:
+    radial-gradient(ellipse 60% 70% at 100% 50%,rgba(200,50,0,.14) 0%,transparent 60%),
+    var(--d2);
+}
+.info-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.info-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.info-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:18px;padding:1.5rem 1.3rem;position:relative;overflow:hidden;transition:transform .25s,border-color .25s;cursor:none;}
+.info-card:hover{transform:translateY(-5px);border-color:rgba(255,180,0,.35);}
+.info-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--r),var(--y));border-radius:0 0 18px 18px;}
+.ic-icon{font-size:1.7rem;margin-bottom:.7rem;display:block;}
+.ic-label{font-size:.62rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--o);margin-bottom:.3rem;}
+.ic-value{font-family:'Black Han Sans',sans-serif;font-size:clamp(1.1rem,2.2vw,1.5rem);color:#fff;line-height:1.2;}
+.ic-sub{font-size:.72rem;color:rgba(255,246,232,.32);margin-top:.2rem;}
+.info-alert{grid-column:1/-1;margin-top:.4rem;background:rgba(230,48,0,.07);border:1px solid rgba(230,48,0,.28);border-radius:14px;padding:1.1rem 1.4rem;display:flex;gap:12px;align-items:flex-start;}
+.info-alert .ia-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.info-alert p{font-size:.83rem;color:var(--muted);line-height:1.7;}
+.info-alert strong{color:#fff;}
+.info-date-display{display:flex;flex-direction:column;gap:1.4rem;}
+.idd-main{font-family:'Black Han Sans',sans-serif;font-size:clamp(4.5rem,10vw,9rem);line-height:.85;color:#fff;filter:drop-shadow(0 0 40px rgba(255,100,0,.28));}
+.idd-main span{display:block;font-size:clamp(1.3rem,2.8vw,2.4rem);background:linear-gradient(90deg,var(--o),var(--y));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.idd-bar{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.4rem;display:flex;align-items:center;gap:12px;transition:border-color .3s,transform .2s;}
+.idd-bar:hover{border-color:rgba(255,180,0,.3);transform:translateX(4px);}
+.idd-bar-icon{font-size:1.4rem;}
+.idd-bar-text{font-size:1rem;font-weight:700;color:#fff;}
+.idd-bar-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+
+/* ══════════════════════════════════════
+   INFONET
+══════════════════════════════════════ */
+#infonet{background:var(--dk);padding:8rem max(5vw,1.8rem);overflow:hidden;}
+.infonet-layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.infonet-left{position:relative;}
+.infonet-giant{
+  font-family:'Black Han Sans',sans-serif;
+  font-size:clamp(5rem,13vw,13rem);
+  line-height:.8;
+  position:relative;
+  user-select:none;
+}
+.infonet-giant::before{
+  content:'3º\AINFONET';
+  white-space:pre;
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(255,246,232,.04) 0%,rgba(255,100,0,.14) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.infonet-giant::after{
+  content:'3º\AINFONET';
+  white-space:pre;
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#fff 0%,var(--y) 38%,var(--o) 78%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 4px 30px rgba(255,150,0,.45));
+}
+.infonet-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:28px;padding:3rem;position:relative;overflow:hidden;}
+.infonet-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,rgba(255,100,0,.09) 0%,transparent 50%),radial-gradient(circle at 100% 100%,rgba(255,200,0,.06) 0%,transparent 50%);}
+.infonet-card h3{font-family:'Black Han Sans',sans-serif;font-size:clamp(1.4rem,3vw,2.4rem);color:#fff;margin-bottom:.8rem;position:relative;line-height:1.1;}
+.infonet-card>p{font-size:.92rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;position:relative;}
+.infonet-card>p strong{color:var(--y);}
+.infonet-steps{display:flex;flex-direction:column;gap:.8rem;margin-bottom:2rem;position:relative;}
+.step{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,180,60,.1);border-radius:12px;padding:.9rem 1.1rem;transition:border-color .2s,transform .2s;}
+.step:hover{border-color:rgba(255,180,60,.25);transform:translateX(5px);}
+.step-num{width:28px;height:28px;background:linear-gradient(135deg,var(--r),var(--o));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Black Han Sans',sans-serif;font-size:.88rem;flex-shrink:0;color:#fff;}
+.step-text{font-size:.87rem;color:var(--muted);line-height:1.4;}
+.step-text strong{color:#fff;}
+
+/* ══════════════════════════════════════
+   TESTIMONIAL / SOCIAL PROOF — NOVA
+══════════════════════════════════════ */
+#prova{
+  background:
+    radial-gradient(ellipse 60% 60% at 100% 0%,rgba(255,100,0,.1) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 0% 100%,rgba(200,40,0,.12) 0%,transparent 55%),
+    var(--d3);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.prova-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+  margin-top:0;
+}
+.prova-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:2rem 1.8rem;
+  position:relative;
+  overflow:hidden;
+  transition:transform .3s,border-color .3s;
+  cursor:none;
+}
+.prova-card:hover{transform:translateY(-7px);border-color:rgba(255,180,0,.35);}
+.prova-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--r),var(--y));border-radius:0 0 22px 22px;opacity:0;transition:opacity .3s;}
+.prova-card:hover::after{opacity:1;}
+.prova-quote{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:1.05rem;
+  color:var(--cream);
+  line-height:1.7;
+  margin-bottom:1.5rem;
+  position:relative;
+}
+.prova-quote::before{
+  content:'\201C';
+  font-size:4rem;
+  color:rgba(255,180,0,.15);
+  font-style:normal;
+  position:absolute;
+  top:-1rem;left:-0.5rem;
+  line-height:1;
+  pointer-events:none;
+}
+.prova-author{display:flex;align-items:center;gap:12px;}
+.prova-avatar{
+  width:38px;height:38px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--r),var(--o));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Black Han Sans',sans-serif;
+  font-size:.95rem;
+  color:#fff;
+  flex-shrink:0;
+}
+.prova-name{font-weight:700;font-size:.88rem;color:var(--cream);}
+.prova-role{font-size:.72rem;color:var(--muted);}
+
+/* Stars */
+.prova-stars{display:flex;gap:3px;margin-bottom:.8rem;}
+.star{width:14px;height:14px;background:var(--y);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+
+/* ══════════════════════════════════════
+   FINAL CTA
+══════════════════════════════════════ */
+#final{
+  background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(200,40,0,.25) 0%,transparent 65%),var(--d3);
+  border-top:1px solid var(--border);
+  padding:8rem max(5vw,1.8rem);text-align:center;overflow:hidden;position:relative;
+}
+#final::before{content:'🍕';position:absolute;font-size:28vw;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.022;pointer-events:none;filter:blur(2px);animation:bgSpin 35s linear infinite;}
+@keyframes bgSpin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+#final .section-inner{position:relative;z-index:2;}
+.final-eyebrow{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(.95rem,2vw,1.35rem);color:var(--muted);margin-bottom:.8rem;}
+.final-h2{font-family:'Black Han Sans',sans-serif;font-size:clamp(2.8rem,7vw,7rem);line-height:.88;color:#fff;margin-bottom:2.5rem;}
+.final-h2 em{font-style:normal;background:linear-gradient(90deg,var(--o),var(--y));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.final-cta-group{display:flex;align-items:center;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.btn-xl{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:'Black Han Sans',sans-serif;font-size:clamp(1.05rem,2.2vw,1.45rem);letter-spacing:1.5px;color:#fff;
+  background:linear-gradient(135deg,var(--r) 0%,var(--o) 50%,var(--g) 100%);
+  border:none;border-radius:18px;padding:20px 46px;cursor:none;text-decoration:none;
+  box-shadow:0 10px 48px rgba(230,48,0,.55),inset 0 1px 0 rgba(255,255,255,.2);
+  position:relative;overflow:hidden;animation:ctaPulse 2.6s ease-in-out infinite;transition:transform .2s;
+}
+.btn-xl::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transform:translateX(-150%) skewX(-20deg);animation:sweep 3s ease-in-out infinite;}
+.btn-xl:hover{transform:scale(1.04) translateY(-4px);}
+.final-meta{font-size:.78rem;color:rgba(255,246,232,.2);letter-spacing:1.5px;text-transform:uppercase;}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer{background:#0A0300;border-top:1px solid rgba(255,180,60,.08);padding:2.5rem max(5vw,1.8rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+.footer-logo{font-family:'Black Han Sans',sans-serif;font-size:1.15rem;color:rgba(255,246,232,.28);}
+.footer-logo span{color:rgba(255,180,0,.48);}
+.footer-right{text-align:right;}
+footer .footer-info{font-size:.73rem;color:rgba(255,246,232,.18);line-height:1.9;}
+.footer-dev{font-size:.7rem;color:rgba(255,246,232,.22);font-style:italic;margin-top:.4rem;}
+.footer-dev span{color:rgba(255,180,0,.4);}
+
+/* ══════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-left.in{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-right.in{opacity:1;transform:translateX(0);}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:900px){
+  #hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-left{padding:5.5rem 2rem 2rem;}
+  .hero-right{min-height:auto;padding:1rem 2rem 4rem;}
+  .pizza-stage{width:clamp(200px,55vw,340px);height:clamp(200px,55vw,340px);}
+  #hero-split::before{display:none;}
+  .pizza-label.top-right{right:0;}
+  .pizza-label.bottom-left{left:0;}
+  .cd-layout{grid-template-columns:1fr;text-align:center;}
+  .cd-blocks{justify-content:center;}
+  .info-layout{grid-template-columns:1fr;gap:3rem;}
+  .infonet-layout{grid-template-columns:1fr;gap:3rem;}
+  .infonet-giant{font-size:clamp(4rem,18vw,9rem);}
+  .why-grid{grid-template-columns:1fr;}
+  .evento-layout{grid-template-columns:1fr;gap:3rem;}
+  .prova-grid{grid-template-columns:1fr;}
+  nav .nav-links{display:none;}
+  .hamburger{display:flex;}
+}
+@media(max-width:640px){
+  .flavors-grid{grid-template-columns:1fr;}
+  .info-cards-grid{grid-template-columns:1fr;}
+  .section{padding:5rem 1.4rem;}
+  .flavor-card{padding:2rem 1.5rem;}
+  .infonet-card{padding:2rem 1.5rem;}
+  footer{flex-direction:column;align-items:flex-start;}
+  .footer-right{text-align:left;}
+  .hero-detail-strip{gap:1.2rem;}
+  .cd-colon{font-size:2rem;}
+  .cd-card{padding:1.2rem .9rem;min-width:72px;}
+  .why-grid{grid-template-columns:1fr;}
+  .prova-grid{grid-template-columns:1fr;}
+}
+@media(max-width:400px){
+  h1.hero-h1{font-size:3.2rem;}
+  .hero-price-number{font-size:3rem;}
+}
+.confetti-piece{position:fixed;pointer-events:none;z-index:999999;font-size:2.4rem;line-height:1;animation:none;}
+
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="particles"></div>
+
+<!-- ══════ NAV ══════ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">🍕 <span>3º INFONET</span></a>
+  <div class="nav-links">
+    <a href="#hero">Início</a>
+    <a href="#flavors">Sabores</a>
+    <a href="#evento">O Evento</a>
+    <a href="#info">Informações</a>
+    <a href="#infonet">Nossa Turma</a>
+  </div>
+  <a href="https://wa.me/17996032051?text=Oi!%20Vim%20pelo%20site%20e%20quero%20garantir%20minha%20pizza%20com%20o%203%C2%BA%20INFONET!" class="nav-cta" id="navCta">COMPRAR AGORA</a>
+  <div class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#hero"     onclick="closeMobile()">Início</a>
+  <a href="#flavors"  onclick="closeMobile()">Sabores</a>
+  <a href="#evento"   onclick="closeMobile()">O Evento</a>
+  <a href="#info"     onclick="closeMobile()">Informações</a>
+  <a href="#infonet"  onclick="closeMobile()">Nossa Turma</a>
+  <a href="https://wa.me/17996032051?text=Oi!%20Vim%20pelo%20site%20e%20quero%20garantir%20minha%20pizza%20com%20o%203%C2%BA%20INFONET!" class="nav-cta" onclick="closeMobile()">COMPRAR AGORA</a>
+</div>
+
+<!-- ══════ HERO ══════ -->
+<section id="hero">
+  <div id="hero-split"></div>
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      VENDAS ABERTAS · 3º INFONET
+    </div>
+    <h1 class="hero-h1">
+      <span class="line1">9ª Festa</span>
+      <span class="line2">da Pizza</span>
+    </h1>
+    <p class="hero-edition">
+      ETEC Prof. Armando José Farinazzo · Fernandópolis, SP<br>
+      <strong>Uma festa da escola. Compre com a nossa turma!</strong>
+    </p>
+    <div class="hero-price-row">
+      <span class="hero-price-currency">R$</span>
+      <span class="hero-price-number">30</span>
+      <div class="hero-price-label">
+        por pizza<br>
+        <span>tamanho família</span>
+      </div>
+    </div>
+    <div class="hero-cta-group">
+      <a href="https://wa.me/17996032051?text=Oi!%20Vim%20pelo%20site%20e%20quero%20garantir%20minha%20pizza%20com%20o%203%C2%BA%20INFONET!" class="btn-primary" id="heroCta">
+        🍕 Comprar Agora
+      </a>
+      <a href="#flavors" class="btn-secondary">Ver sabores ↓</a>
+    </div>
+    <div class="hero-detail-strip">
+      <div class="detail-item">
+        <span class="detail-label">Retirada</span>
+        <span class="detail-value">17 · ABR · 2026</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Horário</span>
+        <span class="detail-value">12h – 22h30</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Local</span>
+        <span class="detail-value">Na ETEC</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="pizza-stage">
+      <div class="pizza-glow"></div>
+      <div class="pizza-glow2"></div>
+      <div class="pizza-glow3"></div>
+      <div class="pizza-emoji-main">🍕</div>
+      <div class="orbit-wrap">
+        <div class="orbit-item" style="--ot:12s;--od:0s;--or:145px;">🧀</div>
+        <div class="orbit-item" style="--ot:12s;--od:-6s;--or:145px;">🥓</div>
+        <div class="orbit-item" style="--ot:18s;--od:-3s;--or:170px;">🍅</div>
+      </div>
+      <div class="pizza-label top-right">
+        <div class="lbl-title">🧀 Apenas Queijo</div>
+        <div class="lbl-sub">Escolha na retirada</div>
+      </div>
+      <div class="pizza-label bottom-left">
+        <div class="lbl-title">🥓 Presunto &amp; Queijo</div>
+        <div class="lbl-sub">Escolha na retirada</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ MARQUEE ══════ -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track" id="mtrack"></div>
+</div>
+
+<!-- ══════ COUNTDOWN ══════ -->
+<section id="countdown">
+  <div class="cd-layout">
+    <div class="reveal-left">
+      <p class="sec-label">Faltam apenas</p>
+      <h2 class="sec-title" style="margin-bottom:0;">Para você <em>retirar</em><br>sua pizza</h2>
+    </div>
+    <div class="cd-blocks reveal-right">
+      <div class="cd-card"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Dias</span></div>
+      <span class="cd-colon">:</span>
+      <div class="cd-card"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Horas</span></div>
+      <span class="cd-colon">:</span>
+      <div class="cd-card"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Min</span></div>
+      <span class="cd-colon">:</span>
+      <div class="cd-card"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Seg</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FLAVORS ══════ -->
+<section id="flavors" class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="sec-label">Os sabores do evento</p>
+      <h2 class="sec-title">Você <em>escolhe</em><br>na hora de retirar</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="flavors-grid reveal">
+      <div class="flavor-card">
+        <span class="corner-deco">🧀</span>
+        <span class="fc-emoji">🧀</span>
+        <div class="fc-name">Apenas Queijo</div>
+        <p class="fc-desc">Camadas generosas de queijo derretido, borda crocante que faz barulho na mordida. Simples, perfeito, irresistível.</p>
+        <span class="fc-tag">Clássico irresistível</span>
+      </div>
+      <div class="flavor-card">
+        <span class="corner-deco">🥓</span>
+        <span class="fc-emoji">🥓🧀</span>
+        <div class="fc-name">Presunto &amp; Queijo</div>
+        <p class="fc-desc">A combinação que nunca falha. Presunto suculento entre camadas de queijo fundido. O sabor de pizza de verdade.</p>
+        <span class="fc-tag">Favorito da galera</span>
+      </div>
+    </div>
+    <div class="flavors-choice-note reveal">
+      <span class="icon">💡</span>
+      <p><strong>Compre agora, escolha depois!</strong> O sabor é decidido somente na hora da retirada, em 17/04. A pizza chega quentinha e você escolhe na hora!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ O EVENTO — nova seção ══════ -->
+<section id="evento" class="section">
+  <div class="section-inner">
+    <div class="evento-layout">
+      <div class="evento-text">
+        <div class="reveal">
+          <p class="sec-label">Conheça o evento</p>
+          <h2 class="sec-title">Uma festa que<br><em>une a ETEC</em></h2>
+          <div class="sec-line"></div>
+        </div>
+        <div class="reveal">
+          <p class="evento-desc">
+            A <strong>9ª Festa da Pizza</strong> é um evento tradicional da ETEC Fernandópolis,
+            organizado com o esforço e dedicação de toda a comunidade escolar.
+            Cada pizza vendida representa o trabalho conjunto de alunos, professores
+            e funcionários em prol de uma escola cada vez melhor.
+          </p>
+          <p class="evento-desc">
+            As vendas são realizadas pelas turmas da escola — e você pode escolher
+            comprar com qualquer uma delas. <strong>A gente, do 3º INFONET, fica feliz
+            em te atender com agilidade e carinho.</strong> Afinal, uma pizza boa começa
+            por um atendimento ainda melhor!
+          </p>
+          <div class="evento-highlight">
+            <div class="evento-highlight-icon">⭐</div>
+            <p>
+              Compre com o <strong>3º INFONET</strong> e garanta um atendimento rápido,
+              direto e sem burocracia. Nossa turma está pronta para te ajudar
+              — é só chamar no WhatsApp!
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="evento-stats reveal-right">
+        <div class="estat-card">
+          <div class="estat-num">9ª</div>
+          <div>
+            <div class="estat-label"><strong>Edição do evento</strong>Uma tradição consolidada na ETEC</div>
+            <div class="estat-bar"><div class="estat-bar-fill" style="--w:90%;"></div></div>
+          </div>
+        </div>
+        <div class="estat-card">
+          <div class="estat-num">R$30</div>
+          <div>
+            <div class="estat-label"><strong>Pizza família inteira</strong>O melhor custo-benefício da cidade</div>
+            <div class="estat-bar"><div class="estat-bar-fill" style="--w:75%;"></div></div>
+          </div>
+        </div>
+        <div class="estat-card">
+          <div class="estat-num">2</div>
+          <div>
+            <div class="estat-label"><strong>Sabores à escolha</strong>Queijo ou Presunto &amp; Queijo — você decide na hora</div>
+            <div class="estat-bar"><div class="estat-bar-fill" style="--w:100%;"></div></div>
+          </div>
+        </div>
+        <div class="estat-card">
+          <div class="estat-num">10h</div>
+          <div>
+            <div class="estat-label"><strong>De janela para retirada</strong>Das 12h às 22h30 do dia 17/04</div>
+            <div class="estat-bar"><div class="estat-bar-fill" style="--w:85%;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ WHY US ══════ -->
+<section id="whyus" class="section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;">
+      <p class="sec-label">Por que comprar com a gente?</p>
+      <h2 class="sec-title">O <em>3º INFONET</em><br>faz a diferença</h2>
+      <div class="sec-line" style="margin:0 auto 3.5rem;"></div>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <span class="why-emoji">🏫</span>
+        <h3>Apoia a escola</h3>
+        <p>Cada pizza vendida contribui diretamente para a ETEC. Você saboreia uma delícia e ainda fortalece o lugar onde a gente aprende e cresce juntos.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-emoji">👨‍💻</span>
+        <h3>Atendimento do 3º INFONET</h3>
+        <p>A nossa turma cuida de tudo: do ingresso à retirada. Rápido, pessoal e sem enrolação. É só falar com a gente e a pizza já está garantida!</p>
+      </div>
+      <div class="why-card">
+        <span class="why-emoji">🍕</span>
+        <h3>Pizza do jeito certo</h3>
+        <p>Queijo puro ou presunto &amp; queijo — a escolha é sua, só na hora de retirar. Sem pressão, sem erro. A pizza quentinha espera pela sua decisão.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ INFO ══════ -->
+<section id="info" class="section">
+  <div class="section-inner">
+    <div class="info-layout">
+      <div>
+        <div class="reveal">
+          <p class="sec-label">Tudo o que você precisa saber</p>
+          <h2 class="sec-title">Data,<br>horário &amp;<br><em>local</em></h2>
+          <div class="sec-line"></div>
+        </div>
+        <div class="info-cards-grid reveal">
+          <div class="info-card">
+            <span class="ic-icon">📅</span>
+            <div class="ic-label">Data</div>
+            <div class="ic-value">17 de Abril</div>
+            <div class="ic-sub">Sexta-feira · 2026</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">⏰</span>
+            <div class="ic-label">Horário de retirada</div>
+            <div class="ic-value">12h às 22h30</div>
+            <div class="ic-sub">Amplo horário para buscar</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">📍</span>
+            <div class="ic-label">Local</div>
+            <div class="ic-value">ETEC Fernandópolis</div>
+            <div class="ic-sub">Retirada na própria escola</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">💰</span>
+            <div class="ic-label">Valor</div>
+            <div class="ic-value">R$ 30,00</div>
+            <div class="ic-sub">Pizza família · pague ao comprar</div>
+          </div>
+          <div class="info-alert">
+            <span class="ia-icon">⚠️</span>
+            <p><strong>Importante:</strong> A retirada é feita exclusivamente com a apresentação do <strong>convite físico</strong> no dia 17/04. Guarde bem o seu!</p>
+          </div>
+        </div>
+      </div>
+      <div class="info-date-display reveal-right">
+        <div class="idd-main">17<br><span>ABRIL 2026</span></div>
+        <div class="idd-bar">
+          <span class="idd-bar-icon">⏰</span>
+          <div>
+            <div class="idd-bar-text">Das 12h às 22h30</div>
+            <div class="idd-bar-sub">Longo horário para não perder</div>
+          </div>
+        </div>
+        <div class="idd-bar">
+          <span class="idd-bar-icon">📍</span>
+          <div>
+            <div class="idd-bar-text">ETEC Fernandópolis</div>
+            <div class="idd-bar-sub">Prof. Armando José Farinazzo</div>
+          </div>
+        </div>
+        <div class="idd-bar">
+          <span class="idd-bar-icon">🎫</span>
+          <div>
+            <div class="idd-bar-text">Convite físico obrigatório</div>
+            <div class="idd-bar-sub">Não perca o seu comprovante</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ INFONET ══════ -->
+<section id="infonet">
+  <div class="infonet-layout">
+    <div class="infonet-left reveal-left">
+      <div class="infonet-giant">3º
+INFONET</div>
+    </div>
+    <div class="infonet-right reveal-right">
+      <div class="infonet-card">
+        <h3>Compre com<br>a nossa sala! 🔥</h3>
+        <p>
+          Os ingressos são vendidos pelos alunos da ETEC, e o <strong>3º INFONET</strong> está
+          aqui para te atender. É rápido, pessoal e você ainda contribui
+          para a nossa turma e para a nossa escola. Todo mundo sai ganhando!
+        </p>
+        <div class="infonet-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text">Fale com um aluno do <strong>3º INFONET</strong></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text">Pague <strong>R$ 30,00</strong> e receba seu convite físico</div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text">Vá à ETEC em <strong>17/04 (12h–22h30)</strong> e retire sua pizza quentinha</div>
+          </div>
+        </div>
+        <a href="https://wa.me/17996032051?text=Oi!%20Vim%20pelo%20site%20e%20quero%20garantir%20minha%20pizza%20com%20o%203%C2%BA%20INFONET!" class="btn-primary" style="width:100%;justify-content:center;font-size:1.05rem;padding:17px;" id="infonetCta">
+          💬 Falar com a Gente no WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ PROVA SOCIAL ══════ -->
+<section id="prova" class="section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;">
+      <p class="sec-label">O que dizem por aí</p>
+      <h2 class="sec-title">Quem já provou,<br><em>aprovou</em></h2>
+      <div class="sec-line" style="margin:0 auto 3.5rem;"></div>
+    </div>
+    <div class="prova-grid reveal">
+      <div class="prova-card">
+        <div class="prova-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <p class="prova-quote">A pizza da Festa da ETEC é uma tradição aqui em Fernandópolis. Todo ano a gente espera ansioso. Quentinha e com muito recheio, vale muito o valor cobrado!</p>
+        <div class="prova-author">
+          <div class="prova-avatar">M</div>
+          <div>
+            <div class="prova-name">Marina S.</div>
+            <div class="prova-role">Compradora da edição anterior</div>
+          </div>
+        </div>
+      </div>
+      <div class="prova-card">
+        <div class="prova-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <p class="prova-quote">Gosto muito de apoiar os alunos da ETEC. A pizza vem bem feita, você retira na escola sem complicação. Já compro todo ano e recomendo a todos!</p>
+        <div class="prova-author">
+          <div class="prova-avatar">R</div>
+          <div>
+            <div class="prova-name">Roberto C.</div>
+            <div class="prova-role">Cliente fiel desde a 6ª edição</div>
+          </div>
+        </div>
+      </div>
+      <div class="prova-card">
+        <div class="prova-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <p class="prova-quote">Comprei com os alunos do INFONET e foi tudo muito prático. Mandei mensagem, acertei o pagamento e no dia fui buscar a pizza. Simples e delicioso!</p>
+        <div class="prova-author">
+          <div class="prova-avatar">A</div>
+          <div>
+            <div class="prova-name">Ana Paula T.</div>
+            <div class="prova-role">Mãe de aluno da ETEC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FINAL CTA ══════ -->
+<section id="final">
+  <div class="section-inner reveal">
+    <p class="final-eyebrow">Não perca essa tradição</p>
+    <h2 class="final-h2">
+      A pizza mais<br>
+      <em>esperada</em> do ano
+    </h2>
+    <div class="final-cta-group">
+      <a href="https://wa.me/17996032051?text=Oi!%20Vim%20pelo%20site%20e%20quero%20garantir%20minha%20pizza%20com%20o%203%C2%BA%20INFONET!" class="btn-xl" id="finalCta">
+        🍕 GARANTIR MINHA PIZZA
+      </a>
+    </div>
+    <p class="final-meta">Compre com o 3º INFONET · Retire em 17/04/2026 · Apoia a ETEC · Escolha o sabor na hora</p>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <div class="footer-logo">9ª Festa da Pizza · <span>3º INFONET</span></div>
+  <div class="footer-right">
+    <p class="footer-info">
+      ETEC Prof. Armando José Farinazzo · Fernandópolis, SP<br>
+      Evento em prol da escola · 17 de Abril de 2026
+    </p>
+    <p class="footer-dev">Desenvolvido com ❤️ por <span>Arthur Amancio Francisco</span> · 3º INFONET © 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ══ CURSOR ══ */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=-200,my=-200,rx=-200,ry=-200;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function animCursor(){
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cur.style.transform='translate(-50%,-50%) scale(2.4)';
+    ring.style.transform='translate(-50%,-50%) scale(1.6)';
+    ring.style.borderColor='rgba(255,184,0,.9)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cur.style.transform='translate(-50%,-50%) scale(1)';
+    ring.style.transform='translate(-50%,-50%) scale(1)';
+    ring.style.borderColor='rgba(255,184,0,.55)';
+  });
+});
+
+/* ══ MOBILE MENU ══ */
+const hamburger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobileMenu');
+hamburger.addEventListener('click',()=>{
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':'';
+});
+function closeMobile(){
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ══ PARTICLES ══ */
+(function(){
+  const wrap=document.getElementById('particles');
+  for(let i=0;i<32;i++){
+    const d=document.createElement('div');
+    d.classList.add('p-dot');
+    const sz=(Math.random()*3+1).toFixed(1);
+    d.style.cssText=[
+      'width:'+sz+'px','height:'+sz+'px',
+      'left:'+(Math.random()*100).toFixed(1)+'%',
+      'top:'+(Math.random()*100).toFixed(1)+'%',
+      '--t:'+(Math.random()*10+8).toFixed(1)+'s',
+      '--d:-'+(Math.random()*8).toFixed(1)+'s',
+      '--dy:'+(-(Math.random()*80+20)).toFixed(0)+'px',
+      '--dx:'+((Math.random()-.5)*60).toFixed(0)+'px',
+      '--op:'+(Math.random()*.08+.02).toFixed(3)
+    ].join(';');
+    wrap.appendChild(d);
+  }
+})();
+
+/* ══ MARQUEE ══ */
+(function(){
+  const items=[
+    '🍕 9ª Festa da Pizza','🧀 3º INFONET','📅 17 ABR 2026',
+    '⏰ 12h às 22h30','🔥 Apoie a ETEC','🥓 Presunto & Queijo',
+    '🧀 Apenas Queijo','💰 R$ 30,00','📍 Retirada na ETEC','❤️ Fernandópolis'
+  ];
+  const track=document.getElementById('mtrack');
+  [...items,...items].forEach(t=>{
+    const el=document.createElement('span');
+    el.className='marquee-item';
+    el.innerHTML=t+'<span class="marquee-sep">·</span>';
+    track.appendChild(el);
+  });
+})();
+
+/* ══ COUNTDOWN ══ */
+(function(){
+  const target=new Date('2026-04-17T12:00:00');
+  const pad=n=>String(n).padStart(2,'0');
+  function tick(){
+    const diff=target-new Date();
+    if(diff<=0){['d','h','m','s'].forEach(k=>document.getElementById('cd-'+k).textContent='00');return;}
+    document.getElementById('cd-d').textContent=pad(Math.floor(diff/86400000));
+    document.getElementById('cd-h').textContent=pad(Math.floor((diff%86400000)/3600000));
+    document.getElementById('cd-m').textContent=pad(Math.floor((diff%3600000)/60000));
+    document.getElementById('cd-s').textContent=pad(Math.floor((diff%60000)/1000));
+  }
+  tick();setInterval(tick,1000);
+})();
+
+/* ══ SCROLL REVEAL ══ */
+(function(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+})();
+
+/* ══ NAV SCROLL ══ */
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').style.background=
+    window.scrollY>60?'rgba(10,3,0,.96)':'rgba(16,6,0,.88)';
+});
+
+/* ══ CONFETTI ══ */
+function launchConfetti(){
+  const emojis=['🍕','🧀','🥓','🍕','🍕','🔥'];
+  for(let i=0;i<55;i++){
+    const c=document.createElement('div');
+    c.classList.add('confetti-piece');
+    c.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    c.style.left=(Math.random()*100)+'vw';
+    c.style.top='-70px';
+    c.style.fontSize=(Math.random()*2+1.8)+'rem';
+    document.body.appendChild(c);
+    const destX=(Math.random()-.5)*220;
+    const destY=Math.random()*600+400;
+    const rot=(Math.random()-.5)*1200;
+    const dur=Math.random()*800+2400;
+    c.animate([
+      {transform:'translate(0,0) rotate(0deg)',opacity:1},
+      {transform:'translate('+destX+'px,'+destY+'px) rotate('+rot+'deg)',opacity:0}
+    ],{duration:dur,easing:'cubic-bezier(.22,1,.24,1)',fill:'forwards'});
+    setTimeout(()=>c.remove(),dur+100);
+  }
+}
+['heroCta','infonetCta','finalCta','navCta'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.addEventListener('click',launchConfetti);
+});
+</script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAZdbg8efL6qJ63nrLBgde-JYf1l8N2aMs",
+    authDomain: "pizzaetec-accf1.firebaseapp.com",
+    projectId: "pizzaetec-accf1",
+    storageBucket: "pizzaetec-accf1.firebasestorage.app",
+    messagingSenderId: "626886654462",
+    appId: "1:626886654462:web:afdc84e78ebe24c35f28af",
+    measurementId: "G-V8BEPGNWBG"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+</body>
+</html>
