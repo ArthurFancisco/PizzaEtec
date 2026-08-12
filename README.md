@@ -30,7 +30,7 @@ Site oficial de divulgação da 9ª Festa da Pizza da ETEC de Fernandópolis, de
 ## Execução local
 
 ~~~bash
-git clone https://github.com/ArthurFancisco/PizzaEtec.git
+git clone https://github.com/arthur-amancio/PizzaEtec.git
 cd PizzaEtec
 python -m http.server 5500
 ~~~
@@ -39,7 +39,7 @@ Acesse http://localhost:5500.
 
 ## Deploy
 
-O repositório contém um workflow responsável pelo deploy no Firebase Hosting. Segredos de autenticação devem permanecer apenas nas configurações protegidas do GitHub Actions.
+O repositório contém um workflow responsável pelo deploy no Firebase Hosting. Segredos de autenticação devem permanecer apenas nas configurações protegidas do GitHub Actions. O site não utiliza Firestore e as regras versionadas negam acesso por padrão.
 
 ## Licença
 
